@@ -224,9 +224,11 @@ function App() {
           percolates={percolates.toString()}
         />
       </div>
-      <button onClick={handleOpenCell}>Open random cell</button>
-      <button onClick={handleReset}>Reset</button>
-      <button disabled>Start simulation</button>
+      <div className="buttons">
+        <button onClick={handleOpenCell}>Open random cell</button>
+        <button onClick={handleReset}>Reset</button>
+        <button disabled>Start simulation</button>
+      </div>
     </div>
   );
 }
