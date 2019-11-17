@@ -49,16 +49,19 @@ function App() {
 
   // Reset button
   const handleReset = () => {
-    percolator.reset(n);
-    setError(null);
-    setCells([...percolator.cells]);
-    setProbability(percolator.probability);
-    setPercolates(percolator.percolates);
-    setForestData(percolator.getForest());
-    setShowForest(true);
-    setIsFull(false);
-    setSimStatus("");
-    setAvgProbability(null);
+    if (simulating) window.location.reload();
+    else {
+      percolator.reset(n);
+      setError(null);
+      setCells([...percolator.cells]);
+      setProbability(percolator.probability);
+      setPercolates(percolator.percolates);
+      setForestData(percolator.getForest());
+      setShowForest(true);
+      setIsFull(false);
+      setSimStatus("");
+      setAvgProbability(null);
+    }
   };
 
   // Change grid size
@@ -129,9 +132,7 @@ function App() {
         >
           open random cell
         </button>
-        <button disabled={simulating} onClick={handleReset || simulating}>
-          reset
-        </button>
+        <button onClick={handleReset || simulating}>reset</button>
         <button disabled={error || simulating} onClick={startSimulation}>
           start simulation
         </button>
