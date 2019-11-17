@@ -10,7 +10,15 @@ export default function Grid(props) {
     for (let i = 0; i < n * n; i++) {
       const open = props.cells[i] === 1;
       const fullyOpen = props.cells[i] === 2;
-      row.push(<Cell key={i} open={open} fullyOpen={fullyOpen} />);
+      row.push(
+        <Cell
+          key={i}
+          index={i}
+          open={open}
+          fullyOpen={fullyOpen}
+          showIndices={props.showIndices}
+        />
+      );
       if ((i + 1) % n === 0) {
         j++;
         grid.push(

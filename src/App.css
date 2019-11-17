@@ -13,6 +13,23 @@ body {
   /* text-align: center; */
 }
 
+.forest {
+  padding: 30px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+}
+
+.treeWrapper {
+  border-right: 1px solid gray;
+  border-left: 1px solid gray;
+  border-top: 1px solid gray;
+  height: 500px;
+  flex: 1 0 21%;
+  margin: 0 auto;
+}
+
 .title {
   font-size: 3rem;
   font-family: "Roboto Mono", sans-serif;
@@ -23,6 +40,7 @@ body {
   font-size: 1rem;
   font-family: "Roboto Mono", sans-serif;
   padding: 20px;
+  margin: 20px auto 0 auto;
 }
 
 td,
@@ -30,6 +48,10 @@ th {
   border: 1px solid gray;
   padding: 10px;
   margin: 0;
+}
+
+.grid {
+  padding-bottom: 20px;
 }
 
 .row {
@@ -44,6 +66,10 @@ th {
   display: inline-block;
   border: 1px solid #424242;
   background-color: rgb(19, 19, 19);
+  color: white;
+  width: 18px;
+  height: 18px;
+  text-align: center;
 }
 
 .open {
@@ -52,6 +78,10 @@ th {
 
 .fully-open {
   background-color: rgb(0, 93, 170);
+}
+
+.error {
+  color: rgb(146, 42, 42);
 }
 
 button {
@@ -65,9 +95,13 @@ button {
   color: rgb(231, 231, 231);
 }
 
+button.small {
+  font-size: 0.8rem;
+}
+
 .buttons {
-  padding-top: 10%;
-  padding-bottom: 10%;
+  padding-top: 2%;
+  padding-bottom: 5%;
 }
 
 button:disabled {
@@ -76,6 +110,7 @@ button:disabled {
 
 button:disabled:hover {
   background-color: rgb(172, 172, 172);
+  cursor: default;
 }
 
 button:hover {
@@ -85,4 +120,28 @@ button:hover {
 
 button:active {
   background-color: rgb(36, 36, 36);
+}
+
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input {
+  padding: 5px;
+  font-size: 1.1rem;
+  text-align: center;
+  width: 15%;
+  border: 1px solid gray;
+  border-radius: 4px;
+  background-color: rgb(179, 203, 223);
+}
+
+.no {
+  background-color: rgb(139, 55, 55) !important;
+}
+
+.yes {
+  background-color: rgb(88, 153, 88);
 }

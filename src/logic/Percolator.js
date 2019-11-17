@@ -35,10 +35,7 @@ export default class Percolator {
     // Then when we can pop one from the list when we open a site - O(1)
   }
 
-  isOpen(i) {
-    return this.cells[i] !== 0;
-  }
-
+  isOpen = i => this.cells[i] !== 0;
   isTopCell = i => i < this.N;
   isBottomCell = i => i >= this.Nsq - this.N;
 
@@ -133,8 +130,9 @@ export default class Percolator {
     }
   }
 
-  reset() {
-    this.init(this.N);
+  reset(n) {
+    if (n != null) this.init(n);
+    else this.init(this.N);
   }
 
   getForest() {
@@ -150,7 +148,7 @@ export default class Percolator {
       let name;
       if (i === 0) name = "Virtual Top";
       else if (i === this.Nsq + 1) name = "Virtual Bottom";
-      else name = i;
+      else name = "" + i;
       map[i] = {
         name,
         children: []
@@ -170,6 +168,8 @@ export default class Percolator {
 
     return forest;
   }
+
+  isFull = () => this.emptyCells.length === 0;
 
   log() {
     this.uf.log();
