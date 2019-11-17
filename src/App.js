@@ -7,6 +7,7 @@ import delay from "./logic/delay";
 import "./App.css";
 
 const DEFAULT_N = 4;
+const SIM_N = 20;
 
 let percolator = new Percolator(DEFAULT_N);
 
@@ -14,8 +15,11 @@ function App() {
   // Probability of being an open cell
   const [cells, setCells] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [simulating, setSimulating] = useState(false);
+  const [simStatus, setSimStatus] = useState("");
   const [isFull, setIsFull] = useState(false);
   const [probability, setProbability] = useState(0.0);
+  const [avgProbability, setAvgProbability] = useState(null);
   const [percolates, setPercolates] = useState(false);
   const [forestData, setForestData] = useState({});
   const [showIndices, setShowIndices] = useState(true);
@@ -40,7 +44,7 @@ function App() {
     setPercolates(percolator.percolates);
     setForestData(percolator.getForest());
     setIsFull(percolator.isFull());
-    percolator.log();
+    if (!simulating) percolator.log();
   };
 
   // Reset button
@@ -53,6 +57,7 @@ function App() {
     setForestData(percolator.getForest());
     setShowForest(true);
     setIsFull(false);
+    setSimStatus("");
   };
 
   // Change grid size
@@ -80,6 +85,27 @@ function App() {
     }
   };
 
+  const startSimulation = async () => {
+    setSimulating(true);
+    setShowIndices(false);
+    let avgProb = 0;
+    for (let i = 0; i < SIM_N; i++) {
+      handleReset();
+      setSimStatus(`ITERATION ${i + 1}/${SIM_N}`);
+      await delay(50);
+      while (!percolator.percolates) {
+        handleOpenCell();
+        await delay(50);
+      }
+      avgProb += percolator.probability;
+    }
+    avgProb /= SIM_N;
+    console.log("AVERAGE PROBABILITY: ", avgProb);
+    setAvgProbability(avgProb);
+    setSimulating(false);
+    setShowForest(false);
+  };
+
   if (loading) return <h1>Loading...</h1>;
   return (
     <div style={{ textAlign: "center" }}>
@@ -90,21 +116,35 @@ function App() {
           n={n}
           probability={probability.toPrecision(4)}
           percolates={percolates.toString()}
+          simulating={simulating}
           handleChangeN={handleChangeN}
         />
       </div>
       <h3 className="error">{error}</h3>
       <div className="buttons">
-        <button disabled={error || isFull} onClick={handleOpenCell}>
+        <button
+          disabled={error || isFull || simulating}
+          onClick={handleOpenCell}
+        >
           open random cell
         </button>
-        <button onClick={handleReset}>reset</button>
-        <button disabled={error}>start simulation</button>
+        <button disabled={simulating} onClick={handleReset || simulating}>
+          reset
+        </button>
+        <button disabled={error || simulating} onClick={startSimulation}>
+          start simulation
+        </button>
         <button onClick={() => setShowIndices(!showIndices)}>
           {showIndices === false ? "show indices" : "hide indices"}
         </button>
       </div>
-      {showForest ? (
+      {simulating ? <h3 id="simulation-status">{simStatus}</h3> : null}
+      <h3>
+        {avgProbability
+          ? "Average probability of percolation: " + avgProbability
+          : null}
+      </h3>
+      {showForest && !simulating ? (
         <div>
           <h3>(Only trees with more than one node are shown)</h3>
           <div className="forest">

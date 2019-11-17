@@ -16,6 +16,7 @@ export default function Table(props) {
           <tr>
             <td>
               <input
+                disabled={props.simulating}
                 type="number"
                 value={props.n}
                 onChange={e => props.handleChangeN(e.target.value)}
