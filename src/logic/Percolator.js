@@ -136,8 +136,13 @@ export default class Percolator {
   }
 
   getForest() {
+    // Thanks to alexandru.pausan and M.A.K. Ripon on stack overflow
+    // (I spent a lot of time trying to figure out an efficient solution)
+    // https://stackoverflow.com/a/31247960
+
     // Unflatten forest from id array
     // Returns nested json object representing tree
+    // O(N)
     const id = this.uf.id;
     let map = {};
     let forest = [];
