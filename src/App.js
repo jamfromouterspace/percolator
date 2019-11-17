@@ -58,6 +58,7 @@ function App() {
     setShowForest(true);
     setIsFull(false);
     setSimStatus("");
+    setAvgProbability(null);
   };
 
   // Change grid size
