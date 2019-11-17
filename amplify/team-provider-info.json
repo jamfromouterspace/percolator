@@ -1,0 +1,14 @@
+{
+    "percolator": {
+        "awscloudformation": {
+            "AuthRoleName": "percolator-percolator-20191117023048-authRole",
+            "UnauthRoleArn": "arn:aws:iam::294005711704:role/percolator-percolator-20191117023048-unauthRole",
+            "AuthRoleArn": "arn:aws:iam::294005711704:role/percolator-percolator-20191117023048-authRole",
+            "Region": "us-east-1",
+            "DeploymentBucketName": "percolator-percolator-20191117023048-deployment",
+            "UnauthRoleName": "percolator-percolator-20191117023048-unauthRole",
+            "StackName": "percolator-percolator-20191117023048",
+            "StackId": "arn:aws:cloudformation:us-east-1:294005711704:stack/percolator-percolator-20191117023048/2d5a6da0-090c-11ea-bcfc-0e9c8848c400"
+        }
+    }
+}
