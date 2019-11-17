@@ -168,11 +168,46 @@ class Percolator {
     this.init(this.N);
   }
 
+  getForest() {
+    // Unflatten forest from id array
+    // Returns nested json object representing tree
+    const id = this.uf.id;
+    let map = {};
+    let forest = [];
+    // Initialize the objects that will be returned later
+    // (still flat, but in a hash map)
+    // We will take advantage of pass by reference
+    for (let i = 0; i < id.length; i++) {
+      let name;
+      if (i === 0) name = "Virtual Top";
+      else if (i === this.Nsq + 1) name = "Virtual Bottom";
+      else name = i;
+      map[i] = {
+        name,
+        children: []
+      };
+    }
+
+    for (let i = 0; i < id.length; i++) {
+      if (id[i] === i) {
+        // Root node
+        forest.push(map[i]);
+      } else {
+        // Non-root node
+        // Populate children array of parent
+        map[id[i]].children.push(map[i]);
+      }
+    }
+
+    return forest;
+  }
+
   log() {
     this.uf.log();
     console.log({
       cells: this.cells,
-      emptyCells: this.emptyCells
+      emptyCells: this.emptyCells,
+      forest: this.getForest()
     });
   }
 }
