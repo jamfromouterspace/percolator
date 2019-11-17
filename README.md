@@ -1,68 +1,78 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# Percolator
 
-## Available Scripts
+This app was inspired by the coursera Algorithms 1 course (very first topic on union-find)
 
-In the project directory, you can run:
+It uses React to display an N by N grid of cells that are either `closed`, `open` (can be connected to other open cells), or `fully open` (touches the top or bottom). It uses quick-union with a virtual node at the top and bottom to determine whether the grid `percolates` or not (i.e. top is connected to bottom). Underneath is a D3 visualization of the trees, and I also added a Monte Carlo "simulation" which fills cells until it percolates, then does that 20 times and determines the average probability of cells being open required for percolation (it's supposed to be something like 0.593, but in this the sim results vary a lot).
 
-### `yarn start`
+See Princeton's Coursera course on Algorithms (week 1) for an overview of the concepts involved here.
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+**Most of the interesting code is in `Percolator.js` and `UnionFind.js`**. The rest is just UI stuff. The simulation stuff is a bit hacky, and I'm using a lot more state than is necessary.
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
+## Converting a flattened array of parent notes to an unflattened js object
 
-### `yarn test`
+The quick-union algorithm uses an array to represent trees, where `array[i] = parent of i`. If `array[i] == i`, then it is a root nodeFor example,
 
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+```
+ 0,1,2,3,4  -> indices for reference
+[0,0,2,2,1] -> parents
+results in the following forest:
 
-### `yarn build`
+  0      2
+ / \    /
+1   4  3
+```
 
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
+I needed to convert this array `[0,0,2,2,1]` into an object like this for d3:
 
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
+```
+[
+  {
+    name: 0,
+    children: [
+      {
+        name: 1,
+        children: []
+      },
+      {
+        name: 4,
+        children: []
+      }
+    ]
+  },
+  {
+    name: 2,
+    children: [
+      {
+        name: 3,
+        children: []
+      }
+    ]
+  }
+]
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+```
 
-### `yarn eject`
+Notice that as you loop through the array, you might enounter a parent id being referenced that you haven't seen yet. No matter, you can solve this in O(N) time.
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+Thanks to alexandru.pausan and M.A.K. Ripon on stack overflow for this solution.
+https://stackoverflow.com/a/31247960.
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+The idea is to make use of pass-by-reference.
 
-Instead, it will copy all the configuration files and the transitive dependencies (Webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+0. Initialize your resulting js object.
+   `forest = []`
+1. Create a hash map, mapping each node `i` to an object shape you want. Initialize the children to `[]`.
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+```
+i : {
+  name: i,
+  children: []
+}
+```
 
-## Learn More
+This is still flat, but these are the actual objects we will be pushing to `forest`.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+2. Loop through the input array. If node `i` is a root node, then push `map[i]` to `forest`. We can modify `map[i]` later, and the changes will be visible in `forest` since this is pass-by-reference. If not a root node, push `map[i]` to `map[parent of i].children`.
+3. Return `forest`
 
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
-
-### Analyzing the Bundle Size
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
-
-### Making a Progressive Web App
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
-
-### Advanced Configuration
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `yarn build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+See `Percolator.getForest` for my implementation
