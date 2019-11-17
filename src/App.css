@@ -30,8 +30,14 @@ body {
   margin: 0 auto;
 }
 
+.title-row {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
 .title {
-  font-size: 3rem;
+  font-size: 2.5rem;
   font-family: "Roboto Mono", sans-serif;
 }
 

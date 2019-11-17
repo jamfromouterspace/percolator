@@ -113,7 +113,13 @@ function App() {
   if (loading) return <h1>Loading...</h1>;
   return (
     <div style={{ textAlign: "center" }}>
-      <h1 className="title">Percolator</h1>
+      <div className="title-row">
+        <div style={{ flex: 1 }}></div>
+        <h1 className="title">Percolator</h1>
+        <a style={{ flex: 1 }} href="https://github.com/closetothe/percolator">
+          <img width="32" alt="view on github" src="github-mark.png" />
+        </a>
+      </div>
       <div className="app">
         <Grid n={n} cells={cells} showIndices={showIndices} />
         <Table
