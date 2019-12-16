@@ -2,9 +2,7 @@
 
 Live site: https://d6mzh87zo8aic.cloudfront.net/
 
-This app was inspired by the coursera Algorithms 1 course (very first topic on union-find).
-
-It uses React to display an N by N grid of cells that are either `closed`, `open` (can be connected to other open cells), or `fully open` (touches the top or bottom). It uses **(unweighted)** quick-union with a virtual node at the top and bottom to determine whether the grid `percolates` or not (i.e. top is connected to bottom). Underneath is a D3 visualization of the trees, and I also added a Monte Carlo "simulation" which fills cells until it percolates, then does that 20 times and determines the average probability of cells being open required for percolation (it's supposed to be something like 0.593, but in this the sim results vary a lot).
+This app uses React to display an N by N grid of cells that are either `closed`, `open` (can be connected to other open cells), or `fully open` (touches the top or bottom). It uses **(unweighted)** quick-union with a virtual node at the top and bottom to determine whether the grid `percolates` or not (i.e. top is connected to bottom). Underneath is a D3 visualization of the trees, and I also added a Monte Carlo "simulation" which fills cells until it percolates, then does that 20 times and determines the average probability of cells being open required for percolation (it's supposed to be something like 0.593, but in this the sim results vary a lot).
 
 See Princeton's Coursera course on Algorithms (week 1) for an overview of the concepts involved here.
 
